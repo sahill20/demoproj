@@ -97,7 +97,7 @@ pipeline{
 
                     script{
                         
-                    sh 'aws ecr get-login-password --region "${params.region}" | docker login --username AWS --password-stdin ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com'
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 496157679619.dkr.ecr.us-east-1.amazonaws.com'
                     sh 'docker push 496157679619.dkr.ecr.us-east-1.amazonaws.com/testmyapp:latest'
 
                     }

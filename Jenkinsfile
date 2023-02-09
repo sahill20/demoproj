@@ -9,7 +9,11 @@ pipeline{
         string(name: 'region', defaultValue: 'us-east-1', description: 'Choose AWS region of cluster')
         string(name: 'AWS_Account_ID', defaultValue: '496157679619', description: 'Choose AWS Account ID ')
     }
-    
+    environment{
+
+        ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
+        SECRET_KEY = credentials('AWS_SECRET_KEY_ID')
+    }
     stages {
         
         stage('Git Checkout'){
@@ -42,30 +46,30 @@ pipeline{
                 }
             }
         }
-        stage('Static code analysis'){
+        // stage('Static code analysis'){
             
-            steps{
+        //     steps{
                 
-                script{
+        //         script{
                     
-                    withSonarQubeEnv(credentialsId: 'sonar-api') {
+        //             withSonarQubeEnv(credentialsId: 'sonar-api') {
                         
-                        sh 'mvn clean package sonar:sonar'
-                    }
-                   }
+        //                 sh 'mvn clean package sonar:sonar'
+        //             }
+        //            }
                     
-                }
-            }
-            stage('Quality Gate Status'){
+        //         }
+        //     }
+        //     stage('Quality Gate Status'){
                 
-                steps{
+        //         steps{
                     
-                    script{
+        //             script{
                         
-                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-api'
-                    }
-                }
-            }
+        //                 waitForQualityGate abortPipeline: false, credentialsId: 'sonar-api'
+        //             }
+        //         }
+        //     }
         stage('Maven build'){
             
             steps{

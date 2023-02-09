@@ -86,24 +86,24 @@ pipeline{
 
                     script{
 
-                        sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                        sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
+                        sh 'docker build -t testmyapp .'
+                        sh 'docker tag testmyapp:latest 496157679619.dkr.ecr.us-east-1.amazonaws.com/testmyapp:latest'
                     }
                 }
             }
-            // stage('Push Image to ECR'){
+            stage('Push Image to ECR'){
 
-            //     steps{
+                steps{
 
-            //         script{
+                    script{
                         
-            //         sh 'aws ecr get-login-password --region "${params.region}" | docker login --username AWS --password-stdin ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com'
-            //         sh 'docker image push ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
+                    sh 'aws ecr get-login-password --region "${params.region}" | docker login --username AWS --password-stdin ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com'
+                    sh 'docker push 496157679619.dkr.ecr.us-east-1.amazonaws.com/testmyapp:latest'
 
-            //         }
-            //     }
+                    }
+                }
                 
-            // }
+            }
     //     stage('Connect with Cluster'){
 
     //     steps{

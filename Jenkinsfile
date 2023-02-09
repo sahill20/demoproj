@@ -87,7 +87,7 @@ pipeline{
                     script{
 
                         sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                        //sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
+                        sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
                     }
                 }
             }

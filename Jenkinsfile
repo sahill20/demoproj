@@ -87,64 +87,64 @@ pipeline{
                     script{
 
                         sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                        sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
+                        //sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
                     }
                 }
             }
-            stage('Push Image to ECR'){
+            // stage('Push Image to ECR'){
 
-                steps{
+            //     steps{
 
-                    script{
+            //         script{
                         
-                    sh 'aws ecr get-login-password --region "${params.region}" | docker login --username AWS --password-stdin ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com'
-                    sh 'docker image push ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
+            //         sh 'aws ecr get-login-password --region "${params.region}" | docker login --username AWS --password-stdin ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com'
+            //         sh 'docker image push ${params.AWS_Account_ID}.dkr.ecr.${params.region}.amazonaws.com/testmyapp:latest'
 
-                    }
-                }
+            //         }
+            //     }
                 
-            }
-        stage('Connect with Cluster'){
+            // }
+    //     stage('Connect with Cluster'){
 
-        steps{
+    //     steps{
 
-            script{
+    //         script{
 
-                sh """
-                aws configure set aws_access_key_id "$ACCESS_KEY"
-                aws configure set aws_secret_access_key "$SECRET_KEY"
-                aws configure set region "${params.region}"
+    //             sh """
+    //             aws configure set aws_access_key_id "$ACCESS_KEY"
+    //             aws configure set aws_secret_access_key "$SECRET_KEY"
+    //             aws configure set region "${params.region}"
 
 
-                aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
-                """
-            }
-        }
-      }
-        stage('Deployment on eks cluster'){
+    //             aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+    //             """
+    //         }
+    //     }
+    //   }
+    //     stage('Deployment on eks cluster'){
 
-        when{ expression { params.action == 'apply'} }
+    //     when{ expression { params.action == 'apply'} }
 
-        steps{
+    //     steps{
 
-            script{
+    //         script{
 
-               def apply = false
+    //            def apply = false
 
-               try{
-                input message: 'please confirm apply to initiate the deployment',  ok: 'Ready to apply the config ?'
-                apply = true
-               }catch(err){
-                apply = false
-                currentBuild.result ='UNSTABLE'
-               }
-               if(apply){
-                sh """
-                    kubectl apply -f .
-                """
-               }
-            }
-        }
-    }
+    //            try{
+    //             input message: 'please confirm apply to initiate the deployment',  ok: 'Ready to apply the config ?'
+    //             apply = true
+    //            }catch(err){
+    //             apply = false
+    //             currentBuild.result ='UNSTABLE'
+    //            }
+    //            if(apply){
+    //             sh """
+    //                 kubectl apply -f .
+    //             """
+    //            }
+    //         }
+    //     }
+    // }
  }      
 }
